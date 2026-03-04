@@ -77,6 +77,7 @@ medichecker/
 - ⚠️ 5~6단계 JSON 스트리밍 금지. 단계 진행 상태만 SSE.
 - ⚠️ 온톨로지 테이블(`law_articles`, `procedures`, `relations`) 스키마 변경 시 반드시 `ontology` 스킬 참조.
 - ⚠️ 1단계 키워드는 하드코딩 금지. `law_articles.keywords[]`에서 동적 로드.
+- ⚠️ 5단계 출력에 `exampleFix`, `originalText` 필드 필수. 예시문이 새로운 위반을 생성하지 않도록 6단계에서 검증.
 
 ## 환경변수
 ```

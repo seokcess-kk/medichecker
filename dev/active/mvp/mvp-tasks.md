@@ -209,3 +209,4 @@
 | 2026-03-04 | I2: 데이터셋 구축 | 60건 (위반29/비위반31), 15개 호 전체 커버, 4개 광고 유형 분포 |
 | 2026-03-04 | I3: 정확도 평가 | F1=0.853 달성, Recall 100%, A/B 비교 완료 |
 | 2026-03-04 | I4: Vercel 배포 | https://medichecker-black.vercel.app, 환경변수 4개 설정, API 동작 확인 |
+| 2026-03-04 | exampleFix 기능 구현 | 수정 예시문 기능 추가 - Violation 타입에 originalText/exampleFix 필드, 5~6단계 프롬프트 수정, ExampleFix UI 컴포넌트 |

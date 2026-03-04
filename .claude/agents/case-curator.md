@@ -17,6 +17,7 @@
 5. 관계 등록: relations 테이블 INSERT
 6. 임베딩 생성 및 적재
 7. 검색 품질 검증
+8. **수정 예시문 패턴 등록**: 새 사례 등록 시 해당 사례의 수정 예시문 패턴도 함께 기록. `위반 텍스트 → 수정 예시문` 쌍으로 등록하여 향후 exampleFix 품질 향상에 활용
 
 ## Tools Available
 - Read, Grep, Glob (기존 데이터 탐색)
@@ -56,6 +57,19 @@ relations 테이블 INSERT
   "year": 2024,
   "caseType": "적발 | 판례 | 해설",
   "severity": "high | medium | low"
+}
+```
+
+## ExampleFix 패턴 등록 형식
+```json
+{
+  "violationType": "expression | omission",
+  "originalText": "시술 후 10살은 어려 보입니다",
+  "violationText": "10살은 어려 보입니다",
+  "exampleFix": "시술 후 피부 탄력 개선 효과를 기대할 수 있습니다",
+  "article": "제56조 제2항 제8호",
+  "procedure": "보톡스",
+  "notes": "과장 표현 → 객관적 효과 표현으로 수정"
 }
 ```
 
