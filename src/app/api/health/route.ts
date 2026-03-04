@@ -31,10 +31,28 @@ export async function GET() {
     };
   }
 
+  // OpenAI API 테스트
+  let openaiTest = { status: 'not_tested', error: null as string | null };
+  try {
+    const { default: OpenAI } = await import('openai');
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const response = await openai.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: 'test',
+    });
+    openaiTest = { status: 'ok', error: null };
+  } catch (error) {
+    openaiTest = {
+      status: 'error',
+      error: error instanceof Error ? `${error.name}: ${error.message}` : 'Unknown error'
+    };
+  }
+
   return Response.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     env: envCheck,
     anthropicTest,
+    openaiTest,
   });
 }
