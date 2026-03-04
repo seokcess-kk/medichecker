@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "skills": {
+    "medical-law": {
+      "type": "domain",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "의료법 제56조 및 의료광고 관련 법령 해석 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["의료법", "제56조", "위반", "금지", "광고", "법령", "조항"],
+        "intentPatterns": [
+          "(판단|분석|해석).*?(위반|법령|조항)",
+          "(만들|작성).*?(프롬프트|판단.*?로직)",
+          "(라벨링|테스트).*?(데이터|사례)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/lib/prompts/**", "src/domain/verification/**", "scripts/eval/**"],
+        "contentPatterns": ["제56조", "article", "violation", "Violation"]
+      }
+    },
+    "rag-pipeline": {
+      "type": "domain",
+      "enforcement": "block",
+      "priority": "high",
+      "description": "RAG 파이프라인(청킹, 임베딩, 검색) 구현 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["RAG", "청킹", "임베딩", "검색", "파이프라인", "pgvector", "pg_trgm"],
+        "intentPatterns": [
+          "(구현|작성|수정).*?(검색|RAG|파이프라인)",
+          "(만들|추가).*?(청크|임베딩)",
+          "(최적화|개선).*?(검색|쿼리)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/domain/rag/**", "src/lib/embedding.ts", "scripts/seed-vectors.ts"],
+        "contentPatterns": ["embedding", "search", "chunk", "pgvector", "similarity"]
+      }
+    },
+    "ontology": {
+      "type": "domain",
+      "enforcement": "block",
+      "priority": "high",
+      "description": "온톨로지 테이블/관계/확장 로직 작성 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["온톨로지", "관계", "law_articles", "procedures", "relations", "그래프"],
+        "intentPatterns": [
+          "(만들|수정|추가).*?(관계|온톨로지|시술|조항)",
+          "(확장|enrichment|enrich).*?(컨텍스트|context)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/domain/ontology/**", "scripts/seed-ontology.ts", "supabase/migrations/**"],
+        "contentPatterns": ["law_articles", "procedures", "relations", "relation_type", "enrichContext"]
+      }
+    },
+    "ui-design": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "UI 컴포넌트 및 사용자 경험 설계 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["컴포넌트", "UI", "화면", "디자인", "결과", "표시"],
+        "intentPatterns": [
+          "(만들|수정).*?(컴포넌트|화면|UI)",
+          "(구현|추가).*?(버튼|입력|결과)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/components/**", "src/app/page.tsx"],
+        "contentPatterns": ["className", "Tailwind", "useState", "React"]
+      }
+    },
+    "legal-data-analysis": {
+      "type": "domain",
+      "enforcement": "block",
+      "priority": "high",
+      "description": "법령 데이터 분석 및 키워드 추출 작업 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["법령 분석", "키워드 추출", "시술 분석", "해설서", "적발 사례"],
+        "intentPatterns": [
+          "(분석|추출).*?(법령|키워드|시술)",
+          "(정리|도출).*?(관계|매핑)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/data/seed/**", "docs/analysis/**"],
+        "contentPatterns": ["detectionDifficulty", "violationExample", "keywords"]
+      }
+    },
+    "legal-data-processing": {
+      "type": "domain",
+      "enforcement": "block",
+      "priority": "high",
+      "description": "법령 데이터 청킹, 임베딩, 온톨로지 구축 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["청킹", "시드", "적재", "데이터 구축", "온톨로지 구축"],
+        "intentPatterns": [
+          "(생성|적재).*?(시드|청크|데이터)",
+          "(구축|만들).*?(온톨로지|관계)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["scripts/seed-*.ts", "src/data/seed/**"],
+        "contentPatterns": ["chunk", "article_id", "procedure_id", "relations.json"]
+      }
+    },
+    "eval-dataset": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "평가 데이터셋 구축 및 정확도 측정 시 필수 참조",
+      "promptTriggers": {
+        "keywords": ["평가", "테스트 데이터", "정확도", "F1", "라벨링"],
+        "intentPatterns": [
+          "(만들|구축).*?(테스트|평가).*?데이터",
+          "(측정|계산).*?(정확도|F1|Precision|Recall)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["scripts/eval/**", "tests/**"],
+        "contentPatterns": ["expectedViolations", "labelConfidence", "f1Score"]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-04T06:27:26.159Z",
+  "testCases": 60,
+  "withOntology": {
+    "metrics": {
+      "total": 60,
+      "tp": 29,
+      "tn": 21,
+      "fp": 10,
+      "fn": 0,
+      "precision": 0.7435897435897436,
+      "recall": 1,
+      "f1": 0.8529411764705882,
+      "accuracy": 0.8333333333333334,
+      "avgTimeMs": 30241.2
+    },
+    "failures": [
+      "TC026",
+      "TC027",
+      "TC033",
+      "TC034",
+      "TC037",
+      "TC040",
+      "TC041",
+      "TC052",
+      "TC053",
+      "TC060"
+    ]
+  },
+  "withoutOntology": {
+    "metrics": {
+      "total": 60,
+      "tp": 28,
+      "tn": 24,
+      "fp": 7,
+      "fn": 1,
+      "precision": 0.8,
+      "recall": 0.9655172413793104,
+      "f1": 0.8750000000000001,
+      "accuracy": 0.8666666666666667,
+      "avgTimeMs": 26516.283333333333
+    },
+    "failures": [
+      "TC004",
+      "TC026",
+      "TC027",
+      "TC028",
+      "TC033",
+      "TC048",
+      "TC052",
+      "TC060"
+    ]
+  },
+  "ontologyContribution": -0.02205882352941191
+}

@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm create:*)",
+      "Bash(pnpm init:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(pnpm dev)",
+      "Bash(npx next dev --port 3002)",
+      "Bash(npx next dev:*)",
+      "Bash(pnpm tsc:*)",
+      "Bash(curl:*)",
+      "Bash(timeout 15 pnpm dev:*)",
+      "Bash(where:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm tsx:*)",
+      "Bash(npx dotenv:*)",
+      "Bash(tree:*)",
+      "Bash(powershell -Command \"Invoke-WebRequest -Uri ''http://localhost:3003/api/verify'' -Method POST -ContentType ''application/json'' -Body ''{\"\"text\"\":\"\"저희 병원 보톡스 시술 후기입니다. 시술 전에는 이마 주름이 깊었는데 완전히 사라졌어요! 100% 효과 보장!\"\",\"\"adType\"\":\"\"blog\"\"}'' | Select-Object -ExpandProperty Content\")",
+      "Bash(powershell -Command \"try { $r = Invoke-WebRequest -Uri ''http://localhost:3003/api/verify'' -Method POST -ContentType ''application/json'' -Body ''{\"\"text\"\":\"\"보톡스 후기\"\",\"\"adType\"\":\"\"blog\"\"}'' -UseBasicParsing; $r.Content } catch { $_Exception.Response.GetResponseStream\\(\\) | ForEach-Object { $reader = New-Object System.IO.StreamReader\\($_; $reader.ReadToEnd\\(\\) } }\")",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm test:ontology:*)",
+      "Bash(pnpm test:pipeline:*)",
+      "Bash(pnpm vitest run:*)",
+      "Bash(node -e:*)",
+      "Bash(npx vercel:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
