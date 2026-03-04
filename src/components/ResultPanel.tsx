@@ -209,7 +209,7 @@ export default function ResultPanel({
   // 결과 표시
   return (
     <div className="h-full flex flex-col gap-3 sm:gap-4 overflow-hidden">
-      {/* 완료 상태 표시 */}
+      {/* 완료 상태 표시 (컴팩트 모드) */}
       <ProgressIndicator
         currentStage={null}
         completedStages={[
@@ -221,39 +221,27 @@ export default function ResultPanel({
           'judgment',
           'verification',
         ]}
+        isComplete={true}
+        totalTimeMs={result.metadata.totalTimeMs}
       />
+
+      {/* 위험도 점수 + 요약 (스크롤 영역 밖, 최상단 고정) */}
+      <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 sm:p-4 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+          <RiskScore score={result.riskScore} />
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">
+              검증 결과 요약
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600">
+              {result.summary}
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* 스크롤 영역 */}
       <div className="flex-1 overflow-y-auto space-y-3 sm:space-y-4 pr-1 sm:pr-2">
-        {/* 위험도 점수 + 요약 */}
-        <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 sm:p-4">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-            <RiskScore score={result.riskScore} />
-            <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">
-                검증 결과 요약
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
-                {result.summary}
-              </p>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4 text-[10px] sm:text-xs text-gray-500">
-                <span className="bg-white px-2 py-1 rounded">
-                  키워드: {result.metadata.keywordMatches}건
-                </span>
-                <span className="bg-white px-2 py-1 rounded">
-                  RAG: {result.metadata.ragChunksUsed}개
-                </span>
-                <span className="bg-white px-2 py-1 rounded">
-                  온톨로지: {result.metadata.ontologyChunksUsed}개
-                </span>
-                <span className="bg-white px-2 py-1 rounded">
-                  {(result.metadata.totalTimeMs / 1000).toFixed(1)}초
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* 위반 하이라이트 */}
         <ViolationHighlight
           text={originalText}
@@ -269,7 +257,7 @@ export default function ResultPanel({
           {result.violations.length === 0 ? (
             <div className="text-center py-8 bg-green-50 rounded-lg border border-green-200">
               <svg
-                className="w-12 h-12 mx-auto mb-3 text-green-500"
+                className="w-12 h-12 mx-auto mb-3 text-[#16A34A]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -281,7 +269,7 @@ export default function ResultPanel({
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p className="text-green-700 font-medium">
+              <p className="text-[#16A34A] font-medium">
                 위반 의심 항목이 발견되지 않았습니다
               </p>
               <p className="text-green-600 text-sm mt-1">
@@ -303,7 +291,7 @@ export default function ResultPanel({
       </div>
 
       {/* 면책 조항 */}
-      <div className="pt-2 sm:pt-3 border-t border-gray-200">
+      <div className="pt-2 sm:pt-3 border-t border-gray-200 flex-shrink-0">
         <p className="text-[10px] sm:text-xs text-gray-400 text-center">
           MediChecker는 AI 기반 사전검증 보조 도구이며, 법률 자문을 대체하지
           않습니다. 최종 판단은 의료법 전문가의 검토를 받으시기 바랍니다.

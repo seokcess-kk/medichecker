@@ -47,7 +47,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1E40AF] flex items-center justify-center">
                 <svg
                   className="w-5 h-5 sm:w-6 sm:h-6 text-white"
                   fill="none"
@@ -67,16 +67,22 @@ export default function Home() {
                 <p className="text-[10px] sm:text-xs text-gray-500">의료광고법 AI 준수 검증</p>
               </div>
             </div>
-            <button
-              onClick={handleLoadSample}
-              disabled={isLoading}
-              className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <span className="hidden sm:inline">샘플 텍스트 불러오기</span>
-              <span className="sm:hidden">샘플</span>
-            </button>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <span className="hidden sm:inline-flex px-2.5 py-1 text-xs font-medium text-[#1E40AF] bg-blue-50 rounded-full border border-blue-200">
+                사전검증 보조 도구
+              </span>
+              <button
+                onClick={handleLoadSample}
+                disabled={isLoading}
+                className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <span className="hidden sm:inline">샘플 텍스트 불러오기</span>
+                <span className="sm:hidden">샘플</span>
+              </button>
+            </div>
           </div>
         </div>
+        <div className="h-0.5 bg-[#1E40AF]" />
       </header>
 
       {/* 메인 콘텐츠: 모바일 상하 / 데스크탑 좌우 분할 */}

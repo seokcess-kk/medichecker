@@ -1,17 +1,24 @@
 'use client';
 
+import { useState } from 'react';
 import { VerifyStage, STAGE_LABELS } from '@/domain/verification/model';
 import { STAGES_ORDER } from '@/data/mockData';
 
 interface ProgressIndicatorProps {
   currentStage: VerifyStage | null;
   completedStages: VerifyStage[];
+  isComplete?: boolean;
+  totalTimeMs?: number;
 }
 
 export default function ProgressIndicator({
   currentStage,
   completedStages,
+  isComplete = false,
+  totalTimeMs,
 }: ProgressIndicatorProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const getStageStatus = (stage: VerifyStage) => {
     if (completedStages.includes(stage)) return 'done';
     if (stage === currentStage) return 'running';
@@ -22,8 +29,79 @@ export default function ProgressIndicator({
   const totalCount = STAGES_ORDER.length;
   const progressPercent = (completedCount / totalCount) * 100;
 
+  // 완료 상태에서 컴팩트 뷰 (접힌 상태)
+  if (isComplete && !isExpanded) {
+    return (
+      <div className="w-full py-2">
+        <div className="flex items-center justify-between py-2 px-3 bg-green-50 rounded-lg border border-green-200">
+          <div className="flex items-center gap-2">
+            <svg
+              className="w-4 h-4 text-green-600"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="text-sm font-medium text-green-700">
+              7단계 검증 완료
+              {totalTimeMs && ` (${(totalTimeMs / 1000).toFixed(1)}초)`}
+            </span>
+          </div>
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1"
+          >
+            상세 보기
+            <svg
+              className="w-3 h-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full py-2 sm:py-4">
+      {/* 완료 상태에서 접기 버튼 */}
+      {isComplete && isExpanded && (
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1"
+          >
+            접기
+            <svg
+              className="w-3 h-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 15l7-7 7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* 모바일: 간소화된 진행바 */}
       <div className="sm:hidden">
         <div className="flex items-center justify-between mb-2">
@@ -37,7 +115,7 @@ export default function ProgressIndicator({
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ease-out ${
-              completedCount === totalCount ? 'bg-green-500' : 'bg-blue-500'
+              completedCount === totalCount ? 'bg-[#16A34A]' : 'bg-blue-500'
             }`}
             style={{ width: `${progressPercent}%` }}
           />
@@ -67,7 +145,7 @@ export default function ProgressIndicator({
                       text-xs font-medium transition-all duration-300
                       ${
                         status === 'done'
-                          ? 'bg-green-500 text-white scale-100'
+                          ? 'bg-[#16A34A] text-white scale-100'
                           : status === 'running'
                           ? 'bg-blue-500 text-white animate-pulse scale-110'
                           : 'bg-gray-200 text-gray-400'
@@ -116,7 +194,7 @@ export default function ProgressIndicator({
                       transition-colors duration-300
                       ${
                         status === 'done'
-                          ? 'text-green-600'
+                          ? 'text-[#16A34A]'
                           : status === 'running'
                           ? 'text-blue-600 font-medium'
                           : 'text-gray-400'
@@ -133,7 +211,7 @@ export default function ProgressIndicator({
                     <div className="absolute inset-0 bg-gray-200" />
                     <div
                       className={`
-                        absolute inset-y-0 left-0 bg-green-500 transition-all duration-500
+                        absolute inset-y-0 left-0 bg-[#16A34A] transition-all duration-500
                         ${status === 'done' ? 'w-full' : 'w-0'}
                       `}
                     />

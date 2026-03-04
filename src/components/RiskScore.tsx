@@ -5,9 +5,9 @@ interface RiskScoreProps {
 }
 
 function getScoreColor(score: number): string {
-  if (score >= 70) return '#EF4444'; // 빨강
-  if (score >= 40) return '#F59E0B'; // 노랑
-  return '#10B981'; // 초록
+  if (score >= 70) return '#DC2626'; // 위험 (빨강)
+  if (score >= 40) return '#F59E0B'; // 주의 (노랑)
+  return '#16A34A'; // 양호 (초록)
 }
 
 function getScoreLabel(score: number): string {

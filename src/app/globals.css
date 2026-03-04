@@ -5,6 +5,13 @@
   --color-risk-medium: #F59E0B;
   --color-risk-low: #9CA3AF;
   --color-success: #10B981;
+
+  /* 브랜딩 색상 */
+  --color-primary: #1E40AF;
+  --color-primary-hover: #1E3A8A;
+  --color-danger: #DC2626;
+  --color-warning: #F59E0B;
+  --color-success-brand: #16A34A;
 }
 
 /* 스크롤바 스타일링 */
