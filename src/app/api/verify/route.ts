@@ -46,10 +46,12 @@ export async function POST(request: NextRequest) {
           // 최종 결과
           sendEvent({ type: 'result', data: result });
         } catch (error) {
+          console.error('Pipeline error:', error);
           sendEvent({
             type: 'result',
             data: {
-              error: error instanceof Error ? error.message : 'Unknown error',
+              error: error instanceof Error ? `${error.name}: ${error.message}` : 'Unknown error',
+              stack: error instanceof Error ? error.stack : undefined,
             },
           });
         } finally {
