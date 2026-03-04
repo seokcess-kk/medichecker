@@ -14,7 +14,7 @@ import type { Violation } from '@/domain/verification/model';
 
 // 모델 ID (실제 사용 가능한 모델)
 export const CLAUDE_MODELS = {
-  SONNET: 'claude-3-5-sonnet-20241022', // 5~6단계 판단용
+  SONNET: 'claude-3-5-sonnet-latest', // 5~6단계 판단용
   HAIKU: 'claude-3-haiku-20240307', // 2~3단계 경량 처리
 } as const;
 
