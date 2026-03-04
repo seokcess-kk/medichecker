@@ -39,6 +39,9 @@ next-env.d.ts
 # Vercel
 .vercel
 
+# Claude settings (may contain secrets)
+.claude/settings.local.json
+
 # Testing
 coverage/
 

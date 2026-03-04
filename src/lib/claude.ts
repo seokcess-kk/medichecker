@@ -12,10 +12,10 @@ import type { SearchResult } from '@/domain/rag/model';
 import type { EnrichedContext } from '@/domain/ontology/model';
 import type { Violation } from '@/domain/verification/model';
 
-// 모델 ID (SPEC.md 1.2 기준)
+// 모델 ID (실제 사용 가능한 모델)
 export const CLAUDE_MODELS = {
-  SONNET: 'claude-sonnet-4-5-20250929', // 5~6단계 판단용
-  HAIKU: 'claude-haiku-4-5-20251001', // 2~3단계 경량 처리
+  SONNET: 'claude-3-5-sonnet-20241022', // 5~6단계 판단용
+  HAIKU: 'claude-3-haiku-20240307', // 2~3단계 경량 처리
 } as const;
 
 export type ClaudeModel = (typeof CLAUDE_MODELS)[keyof typeof CLAUDE_MODELS];
