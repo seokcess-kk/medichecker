@@ -14,6 +14,8 @@ export interface Violation {
   relationPath?: string;
   suggestion: string;
   reviewNote?: string;
+  originalText?: string;   // 원본 문장 전체
+  exampleFix?: string;     // 수정된 예시 문장
 }
 
 export interface VerifyResult {

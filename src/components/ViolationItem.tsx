@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Violation } from '@/domain/verification/model';
+import ExampleFix from './ExampleFix';
 
 interface ViolationItemProps {
   violation: Violation;
@@ -148,6 +149,15 @@ export default function ViolationItem({
           <p className="text-xs font-semibold text-emerald-700 mb-1">수정 가이드</p>
           <p className="text-sm text-emerald-800 break-words">{violation.suggestion}</p>
         </div>
+
+        {/* 수정 예시 (exampleFix가 있을 때만 표시) */}
+        {violation.originalText && violation.exampleFix && (
+          <ExampleFix
+            originalText={violation.originalText}
+            exampleFix={violation.exampleFix}
+            type={violation.type}
+          />
+        )}
       </div>
 
       {/* 펼침 영역 (상세 정보) */}

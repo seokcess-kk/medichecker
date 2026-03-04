@@ -12,6 +12,11 @@ export const VERIFICATION_PROMPT = {
 1. 오탐 제거: 근거 불충분, 과잉 해석
 2. 미탐 확인: 누락된 위반 (특히 omission 타입)
 3. 확신도 조정: 근거 강도에 따라 보정
+4. exampleFix 검증:
+   - 예시문이 원본 광고의 의도를 유지하는가?
+   - 예시문 자체가 새로운 위반을 포함하지 않는가?
+   - omission 위반의 경우 필수 고지사항이 빠짐없이 포함되었는가?
+   - 문제가 있으면 수정된 exampleFix를 finalViolations에 포함
 
 ## 응답 형식 (JSON만)
 {
@@ -23,7 +28,7 @@ export const VERIFICATION_PROMPT = {
       "reason": "수정 사유"
     }
   ],
-  "finalViolations": [...수정된 위반 목록],
+  "finalViolations": [...수정된 위반 목록 (originalText, exampleFix 포함)],
   "finalRiskScore": 70,
   "finalSummary": "최종 판단 요약"
 }`,
