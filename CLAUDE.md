@@ -78,6 +78,7 @@ medichecker/
 - ⚠️ 온톨로지 테이블(`law_articles`, `procedures`, `relations`) 스키마 변경 시 반드시 `ontology` 스킬 참조.
 - ⚠️ 1단계 키워드는 하드코딩 금지. `law_articles.keywords[]`에서 동적 로드.
 - ⚠️ 5단계 출력에 `exampleFix`, `originalText` 필드 필수. 예시문이 새로운 위반을 생성하지 않도록 6단계에서 검증.
+- ⚠️ AI에게 텍스트 position(문자 인덱스)을 계산시키지 말 것. 위반 텍스트는 `text` 필드로만 전달하고, 하이라이트 위치는 `src/lib/highlight.ts`에서 프론트엔드 문자열 매칭으로 계산.
 
 ## 환경변수
 ```

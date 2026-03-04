@@ -6,7 +6,6 @@ export interface VerifyRequest {
 export interface Violation {
   type: 'expression' | 'omission';
   text: string;
-  position?: [number, number];
   article: string;
   description: string;
   confidence: number;
@@ -16,6 +15,7 @@ export interface Violation {
   reviewNote?: string;
   originalText?: string;   // 원본 문장 전체
   exampleFix?: string;     // 수정된 예시 문장
+  highlightRanges?: [number, number][];  // 프론트엔드에서 계산된 하이라이트 위치
 }
 
 export interface VerifyResult {

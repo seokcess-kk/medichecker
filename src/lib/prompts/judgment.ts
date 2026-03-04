@@ -19,8 +19,7 @@ export const JUDGMENT_PROMPT = {
   "violations": [
     {
       "type": "expression",
-      "text": "위반 표현 원문",
-      "position": [시작, 끝],
+      "text": "위반 표현 원문 (글자 하나 틀리지 않게 정확히 복사)",
       "article": "제56조 제2항 제N호",
       "description": "위반 사유 설명",
       "confidence": 85,
@@ -34,6 +33,12 @@ export const JUDGMENT_PROMPT = {
   "riskScore": 75,
   "summary": "전체 판단 요약 (1~2문장)"
 }
+
+## text 필드 작성 규칙 (중요!)
+- 위반 텍스트는 원본 광고에서 **글자 하나 틀리지 않게 정확히 복사**
+- 띄어쓰기, 특수문자, 줄바꿈까지 원본과 동일하게
+- 절대로 요약하거나 바꾸지 말 것
+- 예: 원본이 "100% 완치 보장!"이면 text도 정확히 "100% 완치 보장!"
 
 ## exampleFix 작성 규칙
 1. 원본 의도 유지: 광고 목적을 해치지 않으면서 위반 요소만 수정

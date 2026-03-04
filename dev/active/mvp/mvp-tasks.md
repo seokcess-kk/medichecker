@@ -210,3 +210,4 @@
 | 2026-03-04 | I3: 정확도 평가 | F1=0.853 달성, Recall 100%, A/B 비교 완료 |
 | 2026-03-04 | I4: Vercel 배포 | https://medichecker-black.vercel.app, 환경변수 4개 설정, API 동작 확인 |
 | 2026-03-04 | exampleFix 기능 구현 | 수정 예시문 기능 추가 - Violation 타입에 originalText/exampleFix 필드, 5~6단계 프롬프트 수정, ExampleFix UI 컴포넌트 |
+| 2026-03-04 | 하이라이트 정확도 개선 | AI position 계산 제거 → 프론트엔드 문자열 매칭 (src/lib/highlight.ts), 3단계 매칭 (정확, 정규화, 핵심구절), omission 위반 별도 표시 |

@@ -55,6 +55,7 @@ MediChecker의 7단계 RAG 파이프라인을 정확하게 구현하고,
 - 단계 순서 변경 금지
 - 2~3단계 병합은 정확도 테스트 없이 금지
 - 임베딩 직접 호출 금지 → EmbeddingProvider 사용
+- 파이프라인 출력에서 `position` 기반 참조를 사용하지 않음. 문자열 매칭 방식으로 전환됨 (`src/lib/highlight.ts` 참조)
 
 ## Resource Files
 - [chunking.md](resources/chunking.md) - 청킹 전략

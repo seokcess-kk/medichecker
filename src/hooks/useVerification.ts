@@ -10,6 +10,7 @@ import type {
   VerifyProgress,
   AdType,
 } from '@/domain/verification/model';
+import { findViolationRanges } from '@/lib/highlight';
 
 interface UseVerificationOptions {
   timeout?: number; // 전체 타임아웃 (ms)
@@ -62,8 +63,13 @@ export function useVerification(
     setIsLoading(false);
   }, []);
 
+  // 원본 텍스트 저장 (하이라이트 계산용)
+  const originalTextRef = useRef<string>('');
+
   const verify = useCallback(
     async (text: string, adType: AdType) => {
+      // 원본 텍스트 저장
+      originalTextRef.current = text;
       // 이전 요청 취소
       abort();
 
@@ -145,7 +151,16 @@ export function useVerification(
                 if (data.data.error) {
                   throw new Error(data.data.error);
                 }
-                setResult(data.data as VerifyResult);
+                // 하이라이트 위치 계산
+                const resultData = data.data as VerifyResult;
+                const enrichedViolations = findViolationRanges(
+                  originalTextRef.current,
+                  resultData.violations
+                );
+                setResult({
+                  ...resultData,
+                  violations: enrichedViolations,
+                });
                 setCurrentStage(null);
               }
             } catch (parseError) {

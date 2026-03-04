@@ -4,7 +4,7 @@ export const MOCK_VIOLATIONS: Violation[] = [
   {
     type: 'expression',
     text: '시술 후 10살은 어려 보입니다',
-    position: [45, 62],
+    highlightRanges: [[86, 103]],
     article: '의료법 제56조 제2항 제3호',
     description: '치료 효과에 관하여 객관적으로 인정되지 아니하거나 근거가 없는 과장 광고',
     confidence: 95,
@@ -15,7 +15,7 @@ export const MOCK_VIOLATIONS: Violation[] = [
   {
     type: 'expression',
     text: '환자 A씨는 "완전히 새 사람이 됐어요"라고 말했습니다',
-    position: [120, 155],
+    highlightRanges: [[127, 159]],
     article: '의료법 제56조 제2항 제2호',
     description: '치료 경험담 등을 이용하여 소비자로 하여금 치료 효과를 오인하게 할 우려가 있는 광고',
     confidence: 92,
@@ -26,7 +26,7 @@ export const MOCK_VIOLATIONS: Violation[] = [
   {
     type: 'omission',
     text: '보톡스 시술',
-    position: [10, 17],
+    highlightRanges: [],  // omission은 하이라이트 없음
     article: '의료법 제56조 제2항 제9호',
     description: '의료인의 기능, 진료방법에 관한 사항으로서 심의를 받지 않은 광고',
     confidence: 75,
@@ -37,7 +37,7 @@ export const MOCK_VIOLATIONS: Violation[] = [
   {
     type: 'expression',
     text: '이 시술은 100% 안전합니다',
-    position: [200, 215],
+    highlightRanges: [[214, 231]],
     article: '의료법 제56조 제2항 제3호',
     description: '치료 효과에 관하여 객관적으로 인정되지 아니하거나 근거가 없는 과장 광고',
     confidence: 55,

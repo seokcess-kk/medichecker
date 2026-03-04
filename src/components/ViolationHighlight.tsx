@@ -32,17 +32,37 @@ export default function ViolationHighlight({
   violations,
   onViolationClick,
 }: ViolationHighlightProps) {
-  // 위반 항목들을 위치 기반으로 정렬
-  const sortedViolations = [...violations]
-    .filter((v) => v.position)
-    .sort((a, b) => (a.position![0] - b.position![0]));
+  // highlightRanges가 있는 위반 항목들을 위치 기반으로 정렬
+  const highlightableViolations: Array<{ violation: Violation; range: [number, number] }> = [];
+
+  violations.forEach(v => {
+    if (v.highlightRanges && v.highlightRanges.length > 0) {
+      v.highlightRanges.forEach(range => {
+        highlightableViolations.push({ violation: v, range });
+      });
+    }
+  });
+
+  // 시작 위치 기준 정렬
+  highlightableViolations.sort((a, b) => a.range[0] - b.range[0]);
+
+  // 겹치는 범위 처리 (나중 것이 우선)
+  const mergedRanges = highlightableViolations.filter((item, index) => {
+    if (index === 0) return true;
+    const prev = highlightableViolations[index - 1];
+    // 이전 범위와 겹치면 제외 (나중 것 유지를 위해 역순 처리 필요 시 수정)
+    return item.range[0] >= prev.range[1];
+  });
 
   // 텍스트를 세그먼트로 분할
   const segments: TextSegment[] = [];
   let lastEnd = 0;
 
-  sortedViolations.forEach((violation) => {
-    const [start, end] = violation.position!;
+  mergedRanges.forEach(({ violation, range }) => {
+    const [start, end] = range;
+
+    // 범위 유효성 검사
+    if (start < 0 || end > text.length || start >= end) return;
 
     // 이전 끝과 현재 시작 사이의 일반 텍스트
     if (start > lastEnd) {
@@ -82,6 +102,9 @@ export default function ViolationHighlight({
     });
   }
 
+  // omission 위반 개수 (하이라이트 없는 위반)
+  const omissionViolations = violations.filter(v => v.type === 'omission');
+
   return (
     <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-200">
       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2 sm:mb-3 pb-2 border-b border-gray-100">
@@ -101,6 +124,21 @@ export default function ViolationHighlight({
           </span>
         </div>
       </div>
+
+      {/* 누락 위반 안내 */}
+      {omissionViolations.length > 0 && (
+        <div className="mb-2 sm:mb-3 p-2 bg-amber-50 rounded border border-amber-200">
+          <p className="text-[10px] sm:text-xs text-amber-700 flex items-center gap-1">
+            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>
+              <strong>누락 위반 {omissionViolations.length}건</strong> - 필수 고지사항 미포함 (아래 위반 항목에서 확인)
+            </span>
+          </p>
+        </div>
+      )}
+
       <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap text-gray-800 max-h-[200px] sm:max-h-[300px] overflow-y-auto">
         {segments.map((segment, index) => {
           if (segment.violation) {
