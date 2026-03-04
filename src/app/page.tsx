@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import TextInput from '@/components/TextInput';
 import AdTypeSelector from '@/components/AdTypeSelector';
 import VerifyButton from '@/components/VerifyButton';
 import ResultPanel from '@/components/ResultPanel';
-import { AdType } from '@/domain/verification/model';
+import { AdType, Violation } from '@/domain/verification/model';
 import { MOCK_SAMPLE_TEXT } from '@/data/mockData';
 import { useVerification } from '@/hooks/useVerification';
 
 export default function Home() {
   const [text, setText] = useState('');
   const [adType, setAdType] = useState<AdType>('blog');
+  const [isEditMode, setIsEditMode] = useState(true);
+  const [selectedViolation, setSelectedViolation] = useState<Violation | null>(null);
 
   // SSE 기반 검증 훅
   const {
@@ -24,6 +26,13 @@ export default function Home() {
     reset,
   } = useVerification({ timeout: 120000 }); // 2분 타임아웃
 
+  // 검증 완료 시 자동으로 하이라이트 모드
+  useEffect(() => {
+    if (result) {
+      setIsEditMode(false);
+    }
+  }, [result]);
+
   const handleVerify = useCallback(async () => {
     if (!text.trim()) return;
     await verify(text, adType);
@@ -31,12 +40,31 @@ export default function Home() {
 
   const handleLoadSample = useCallback(() => {
     setText(MOCK_SAMPLE_TEXT);
+    setIsEditMode(true);
     reset();
   }, [reset]);
 
   const handleRetry = useCallback(() => {
     handleVerify();
   }, [handleVerify]);
+
+  const handleEditClick = useCallback(() => {
+    setIsEditMode(true);
+  }, []);
+
+  const handleViolationClick = useCallback((violation: Violation) => {
+    setSelectedViolation(violation);
+    // 우측 패널의 해당 위반 항목으로 스크롤하기 위해 이벤트 전파
+  }, []);
+
+  const handleTextChange = useCallback((newText: string) => {
+    setText(newText);
+    // 텍스트 변경 시 결과 초기화
+    if (result) {
+      reset();
+      setIsEditMode(true);
+    }
+  }, [result, reset]);
 
   const canVerify = text.trim().length > 0 && !isLoading;
 
@@ -47,12 +75,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1E40AF] flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#1E40AF] flex items-center justify-center" aria-hidden="true">
                 <svg
                   className="w-5 h-5 sm:w-6 sm:h-6 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -74,7 +103,7 @@ export default function Home() {
               <button
                 onClick={handleLoadSample}
                 disabled={isLoading}
-                className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+                className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <span className="hidden sm:inline">샘플 텍스트 불러오기</span>
                 <span className="sm:hidden">샘플</span>
@@ -89,35 +118,46 @@ export default function Home() {
       <div className="flex-1 max-w-7xl w-full mx-auto px-4 py-4 sm:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 h-full lg:min-h-[calc(100vh-120px)]">
           {/* 입력 패널 */}
-          <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 order-1">
+          <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 flex flex-col gap-4 sm:gap-5 order-1">
             <div>
               <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">
-                광고 텍스트 입력
+                {isEditMode || !result ? '광고 텍스트 입력' : '광고 텍스트 (검증됨)'}
               </h2>
               <p className="text-xs sm:text-sm text-gray-500">
-                검증할 블로그/SNS 광고 텍스트를 입력하세요
+                {isEditMode || !result
+                  ? '검증할 블로그/SNS 광고 텍스트를 입력하세요'
+                  : '위반 의심 부분이 하이라이트 표시됩니다'}
               </p>
             </div>
 
             <AdTypeSelector
               value={adType}
               onChange={setAdType}
-              disabled={isLoading}
+              disabled={isLoading || (!isEditMode && !!result)}
             />
 
-            <div className="flex-1 min-h-[200px] sm:min-h-0">
+            <div className="flex-1 flex flex-col min-h-0">
               <TextInput
                 value={text}
-                onChange={setText}
+                onChange={handleTextChange}
                 disabled={isLoading}
+                highlightMode={!isEditMode && !!result}
+                violations={result?.violations}
+                onViolationClick={handleViolationClick}
+                onEditClick={handleEditClick}
               />
             </div>
 
-            <VerifyButton
-              onClick={handleVerify}
-              disabled={!canVerify}
-              loading={isLoading}
-            />
+            {/* 편집 모드일 때만 검증 버튼 표시 */}
+            {(isEditMode || !result) && (
+              <div className="mt-1">
+                <VerifyButton
+                  onClick={handleVerify}
+                  disabled={!canVerify}
+                  loading={isLoading}
+                />
+              </div>
+            )}
           </div>
 
           {/* 결과 패널 */}
@@ -130,6 +170,8 @@ export default function Home() {
               completedStages={completedStages}
               originalText={text}
               onRetry={handleRetry}
+              selectedViolation={selectedViolation}
+              onViolationSelect={setSelectedViolation}
             />
           </div>
         </div>

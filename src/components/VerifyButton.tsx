@@ -18,14 +18,15 @@ export default function VerifyButton({
       disabled={disabled || loading}
       className={`
         w-full py-4 px-6 rounded-lg font-semibold text-white
-        transition-all duration-200
+        transition-colors duration-200
         flex items-center justify-center gap-2
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
         ${
           loading
-            ? 'bg-blue-400 cursor-wait'
+            ? 'bg-[#1E40AF]/70 cursor-wait'
             : disabled
             ? 'bg-gray-300 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+            : 'bg-[#1E40AF] hover:bg-[#1E3A8A] active:bg-[#1E3A8A]'
         }
       `}
     >
@@ -36,6 +37,7 @@ export default function VerifyButton({
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"
@@ -51,7 +53,7 @@ export default function VerifyButton({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          검증 중...
+          검증 중…
         </>
       ) : (
         <>
@@ -60,6 +62,7 @@ export default function VerifyButton({
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

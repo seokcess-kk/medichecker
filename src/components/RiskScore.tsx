@@ -47,18 +47,18 @@ export default function RiskScore({ score }: RiskScoreProps) {
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
-            className="transition-all duration-700 ease-out"
+            className="transition-[stroke-dashoffset] duration-700 ease-out"
           />
         </svg>
         {/* 점수 텍스트 */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300"
+            className="text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 tabular-nums"
             style={{ color }}
           >
             {score}
           </span>
-          <span className="text-[10px] sm:text-xs text-gray-500">/ 100</span>
+          <span className="text-[10px] sm:text-xs text-gray-500 tabular-nums">/ 100</span>
         </div>
       </div>
       <div

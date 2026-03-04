@@ -121,6 +121,23 @@
         "pathPatterns": ["scripts/eval/**", "tests/**"],
         "contentPatterns": ["expectedViolations", "labelConfidence", "f1Score"]
       }
+    },
+    "web-design-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Review UI code for Web Interface Guidelines compliance",
+      "promptTriggers": {
+        "keywords": ["UI", "리뷰", "접근성", "디자인", "UX", "감사"],
+        "intentPatterns": [
+          "(리뷰|검토|확인).*?(UI|디자인|UX)",
+          "(체크|점검).*?(접근성|best practice)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["src/components/**", "src/app/page.tsx"],
+        "contentPatterns": ["className", "aria-", "role=", "tabIndex"]
+      }
     }
   }
 }

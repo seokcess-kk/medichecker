@@ -32,9 +32,12 @@ export default function AdTypeSelector({
             type="button"
             onClick={() => onChange(type)}
             disabled={disabled}
+            aria-label={`광고 유형: ${AD_TYPE_LABELS[type]}`}
+            aria-pressed={value === type}
             className={`
-              py-2 sm:py-3 px-2 sm:px-4 rounded-lg border-2 transition-all
+              py-2 sm:py-3 px-2 sm:px-4 rounded-lg border-2 transition-colors
               flex flex-col items-center gap-0.5 sm:gap-1
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
               ${
                 value === type
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
@@ -43,7 +46,7 @@ export default function AdTypeSelector({
               disabled:opacity-50 disabled:cursor-not-allowed
             `}
           >
-            <span className="text-sm sm:text-lg font-bold">{AD_TYPE_ICONS[type]}</span>
+            <span className="text-sm sm:text-lg font-bold" aria-hidden="true">{AD_TYPE_ICONS[type]}</span>
             <span className="text-[10px] sm:text-xs">{AD_TYPE_LABELS[type]}</span>
           </button>
         ))}

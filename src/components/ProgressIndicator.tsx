@@ -39,6 +39,7 @@ export default function ProgressIndicator({
               className="w-4 h-4 text-green-600"
               fill="currentColor"
               viewBox="0 0 20 20"
+              aria-hidden="true"
             >
               <path
                 fillRule="evenodd"
@@ -48,12 +49,14 @@ export default function ProgressIndicator({
             </svg>
             <span className="text-sm font-medium text-green-700">
               7단계 검증 완료
-              {totalTimeMs && ` (${(totalTimeMs / 1000).toFixed(1)}초)`}
+              {totalTimeMs && <span className="tabular-nums"> ({(totalTimeMs / 1000).toFixed(1)}초)</span>}
             </span>
           </div>
           <button
             onClick={() => setIsExpanded(true)}
-            className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1"
+            aria-expanded="false"
+            aria-label="검증 단계 상세 보기"
+            className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 rounded"
           >
             상세 보기
             <svg
@@ -61,6 +64,7 @@ export default function ProgressIndicator({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -82,7 +86,9 @@ export default function ProgressIndicator({
         <div className="flex justify-end mb-2">
           <button
             onClick={() => setIsExpanded(false)}
-            className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1"
+            aria-expanded="true"
+            aria-label="검증 단계 접기"
+            className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 rounded"
           >
             접기
             <svg
@@ -90,6 +96,7 @@ export default function ProgressIndicator({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -108,7 +115,7 @@ export default function ProgressIndicator({
           <span className="text-xs font-medium text-gray-700">
             {currentStage ? STAGE_LABELS[currentStage] : '검증 완료'}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-500 tabular-nums">
             {completedCount}/{totalCount}
           </span>
         </div>
@@ -122,8 +129,8 @@ export default function ProgressIndicator({
         </div>
         {currentStage && (
           <div className="flex items-center gap-2 mt-2">
-            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span className="text-xs text-blue-600 animate-pulse">처리 중...</span>
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" aria-hidden="true" />
+            <span className="text-xs text-blue-600 animate-pulse">처리 중…</span>
           </div>
         )}
       </div>
@@ -142,21 +149,23 @@ export default function ProgressIndicator({
                   <div
                     className={`
                       w-7 h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center
-                      text-xs font-medium transition-all duration-300
+                      text-xs font-medium transition-colors duration-300
                       ${
                         status === 'done'
-                          ? 'bg-[#16A34A] text-white scale-100'
+                          ? 'bg-[#16A34A] text-white'
                           : status === 'running'
-                          ? 'bg-blue-500 text-white animate-pulse scale-110'
+                          ? 'bg-blue-500 text-white animate-pulse'
                           : 'bg-gray-200 text-gray-400'
                       }
                     `}
+                    aria-label={`${STAGE_LABELS[stage]}: ${status === 'done' ? '완료' : status === 'running' ? '진행 중' : '대기'}`}
                   >
                     {status === 'done' ? (
                       <svg
                         className="w-3.5 h-3.5 lg:w-4 lg:h-4"
                         fill="currentColor"
                         viewBox="0 0 20 20"
+                        aria-hidden="true"
                       >
                         <path
                           fillRule="evenodd"
@@ -169,6 +178,7 @@ export default function ProgressIndicator({
                         className="w-3.5 h-3.5 animate-spin"
                         fill="none"
                         viewBox="0 0 24 24"
+                        aria-hidden="true"
                       >
                         <circle
                           className="opacity-25"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Violation } from '@/domain/verification/model';
 
 interface ViolationItemProps {
@@ -36,6 +36,12 @@ function getConfidenceBadgeStyle(confidence: number): {
   };
 }
 
+function getConfidenceBarColor(confidence: number): string {
+  if (confidence >= 90) return 'border-l-[#DC2626]';
+  if (confidence >= 60) return 'border-l-[#F59E0B]';
+  return 'border-l-gray-400';
+}
+
 function getTypeLabel(type: 'expression' | 'omission'): string {
   return type === 'expression' ? '표현 위반' : '누락 위반';
 }
@@ -48,16 +54,35 @@ export default function ViolationItem({
 }: ViolationItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const badgeStyle = getConfidenceBadgeStyle(violation.confidence);
+  const barColor = getConfidenceBarColor(violation.confidence);
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  // 선택 시 스크롤
+  useEffect(() => {
+    if (isSelected && itemRef.current) {
+      itemRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setIsExpanded(true);
+    }
+  }, [isSelected]);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
     onClick?.();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleToggle();
+    }
+  };
+
   return (
     <div
+      ref={itemRef}
       className={`
-        rounded-lg border transition-all
+        rounded-lg border transition-colors border-l-4
+        ${barColor}
         ${
           isSelected
             ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
@@ -67,8 +92,13 @@ export default function ViolationItem({
     >
       {/* 헤더 (항상 보임) - 클릭 영역 */}
       <div
+        role="button"
+        tabIndex={0}
         onClick={handleToggle}
-        className="p-3 sm:p-4 cursor-pointer"
+        onKeyDown={handleKeyDown}
+        aria-expanded={isExpanded}
+        aria-label={`위반 항목 ${index + 1}: ${violation.text}`}
+        className="p-3 sm:p-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-lg"
       >
         <div className="flex items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -95,6 +125,7 @@ export default function ViolationItem({
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

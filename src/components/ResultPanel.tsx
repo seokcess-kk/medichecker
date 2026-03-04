@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { VerifyResult, VerifyStage, Violation } from '@/domain/verification/model';
 import RiskScore from './RiskScore';
-import ViolationHighlight from './ViolationHighlight';
 import ViolationItem from './ViolationItem';
 import ProgressIndicator from './ProgressIndicator';
 
@@ -15,6 +13,8 @@ interface ResultPanelProps {
   completedStages: VerifyStage[];
   originalText: string;
   onRetry?: () => void;
+  selectedViolation?: Violation | null;
+  onViolationSelect?: (violation: Violation | null) => void;
 }
 
 function EmptyState() {
@@ -26,6 +26,7 @@ function EmptyState() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -89,6 +90,7 @@ function LoadingState({
                 className="w-10 h-10 sm:w-12 sm:h-12 text-blue-500 animate-spin"
                 fill="none"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <circle
                   className="opacity-25"
@@ -110,7 +112,7 @@ function LoadingState({
             AI가 광고를 분석 중입니다
           </h3>
           <p className="text-xs sm:text-sm text-gray-500 animate-pulse">
-            잠시만 기다려주세요...
+            잠시만 기다려주세요…
           </p>
         </div>
       </div>
@@ -133,6 +135,7 @@ function ErrorState({
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -151,13 +154,14 @@ function ErrorState({
       {onRetry && (
         <button
           onClick={onRetry}
-          className="px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="px-6 py-2.5 bg-[#1E40AF] text-white text-sm font-medium rounded-lg hover:bg-[#1E3A8A] transition-colors flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         >
           <svg
             className="w-4 h-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -179,13 +183,10 @@ export default function ResultPanel({
   error,
   currentStage,
   completedStages,
-  originalText,
   onRetry,
+  selectedViolation,
+  onViolationSelect,
 }: ResultPanelProps) {
-  const [selectedViolation, setSelectedViolation] = useState<Violation | null>(
-    null
-  );
-
   // 에러 상태
   if (error) {
     return <ErrorState error={error} onRetry={onRetry} />;
@@ -227,13 +228,13 @@ export default function ResultPanel({
 
       {/* 위험도 점수 + 요약 (스크롤 영역 밖, 최상단 고정) */}
       <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 sm:p-4 flex-shrink-0">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <RiskScore score={result.riskScore} />
-          <div className="flex-1 text-center sm:text-left">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">
+          <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-1">
               검증 결과 요약
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
               {result.summary}
             </p>
           </div>
@@ -242,13 +243,6 @@ export default function ResultPanel({
 
       {/* 스크롤 영역 */}
       <div className="flex-1 overflow-y-auto space-y-3 sm:space-y-4 pr-1 sm:pr-2">
-        {/* 위반 하이라이트 */}
-        <ViolationHighlight
-          text={originalText}
-          violations={result.violations}
-          onViolationClick={setSelectedViolation}
-        />
-
         {/* 위반 항목 목록 */}
         <div className="space-y-2 sm:space-y-3">
           <h3 className="text-base sm:text-lg font-semibold text-gray-800">
@@ -261,6 +255,7 @@ export default function ResultPanel({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -283,7 +278,7 @@ export default function ResultPanel({
                 violation={violation}
                 index={index}
                 isSelected={selectedViolation === violation}
-                onClick={() => setSelectedViolation(violation)}
+                onClick={() => onViolationSelect?.(violation)}
               />
             ))
           )}
