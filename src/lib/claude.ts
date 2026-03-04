@@ -13,8 +13,9 @@ import type { EnrichedContext } from '@/domain/ontology/model';
 import type { Violation } from '@/domain/verification/model';
 
 // 모델 ID (실제 사용 가능한 모델)
+// TODO: Sonnet 접근 권한 확인 후 claude-3-sonnet-20240229로 변경
 export const CLAUDE_MODELS = {
-  SONNET: 'claude-3-sonnet-20240229', // 5~6단계 판단용
+  SONNET: 'claude-3-haiku-20240307', // 5~6단계 판단용 (임시: Haiku 사용)
   HAIKU: 'claude-3-haiku-20240307', // 2~3단계 경량 처리
 } as const;
 
