@@ -182,11 +182,12 @@
   - Without Ontology: F1 = 0.875 (Recall 96.6%)
   - 기여율: -2.2% (온톨로지가 Recall 향상, Precision 하락)
 
-### I4: 배포
-- [ ] Vercel 프로젝트 생성
-- [ ] 환경변수 설정
-- [ ] 프로덕션 배포
-- [ ] 최종 검증
+### I4: 배포 ✅
+- [x] Vercel 프로젝트 생성 (2026-03-04)
+- [x] 환경변수 설정 (2026-03-04) - 4개 환경변수 Production에 설정
+- [x] 프로덕션 배포 (2026-03-04) - https://medichecker-black.vercel.app
+- [x] 최종 검증 (2026-03-04) - API 동작 확인 (위험도 80, 위반 1건 감지)
+- [x] Claude 모델 ID 수정 (2026-03-04) - Haiku 모델로 임시 대체 (Sonnet 접근 권한 필요)
 
 ---
 
@@ -207,3 +208,4 @@
 | 2026-03-04 | I1: 통합 테스트 | Vitest 설정, pipeline.test.ts (14 tests), ontology.test.ts (20 tests), F1 1.00 |
 | 2026-03-04 | I2: 데이터셋 구축 | 60건 (위반29/비위반31), 15개 호 전체 커버, 4개 광고 유형 분포 |
 | 2026-03-04 | I3: 정확도 평가 | F1=0.853 달성, Recall 100%, A/B 비교 완료 |
+| 2026-03-04 | I4: Vercel 배포 | https://medichecker-black.vercel.app, 환경변수 4개 설정, API 동작 확인 |
